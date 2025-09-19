@@ -20,6 +20,8 @@ bool stop = false;
 List<int> card1 = [-1, -1];
 List<int> card2 = [-1, -1];
 
+int parejas = 0;
+
 class _MemoramaState extends State<Memorama> {
   @override
   void initState() {
@@ -30,24 +32,63 @@ class _MemoramaState extends State<Memorama> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          const SizedBox(height: 40),
-          const Text("Piña Becerril Manuel Alejandro"),
-
-          // Tablero
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                for (int fila = 0; fila < 5; fila++) ...[
-                  FilaM(fila),
-                  const SizedBox(height: 4),
-                ],
-              ],
+          Column(
+            children: [
+            const SizedBox(height: 10),
+            const Text("Piña Becerril Manuel Alejandro"),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  restartAll();
+                });
+              },
+              child: const Text("Restart"),
             ),
+
+            // Tablero
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (int fila = 0; fila < 5; fila++) ...[
+                    FilaM(fila),
+                    const SizedBox(height: 4),
+                  ],
+                ],
+              ),
+            ),
+          ],
           ),
-        ],
+          if (parejas == 10) cartaGanar()
+        ]
+      )
+    );
+  }
+
+  Center cartaGanar() {
+    return Center(
+      child: Container(
+        width: 200,
+        height: 150,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Center(
+          child: Text(
+            "¡Ganaste!"
+                "    Presiona Restart",
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.green,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
       ),
     );
   }
@@ -67,7 +108,6 @@ class _MemoramaState extends State<Memorama> {
               color: getColorFromNumber(matriz[fila][col]),
               onTap: () {
                 setState(() {
-                  debugPrint("Tocaste casilla [$fila,$col] valor ${matriz[fila][col]}");
                   if(stop == false) {
                     if (girados[fila][col] == 0) {
                       girados[fila][col] = 1;
@@ -100,7 +140,7 @@ class _MemoramaState extends State<Memorama> {
         height: 120,
         child: Container(
           decoration: BoxDecoration(
-            color: girados[fila][col] == 0 ? Colors.black : color,
+            color: girados[fila][col] == 0 ? Colors.grey : color,
             borderRadius: BorderRadius.circular(6),
           ),
         ),
@@ -133,7 +173,7 @@ class _MemoramaState extends State<Memorama> {
       case 1: return Colors.red;
       case 2: return Colors.yellow;
       case 3: return Colors.orange;
-      case 4: return Colors.white;
+      case 4: return Colors.indigo;
       case 5: return Colors.pink;
       case 6: return Colors.purple;
       case 7: return Colors.green;
@@ -144,7 +184,6 @@ class _MemoramaState extends State<Memorama> {
   }
 
   bool checkPair(){
-
     bool res;
 
     if(matriz[card1[0]][card1[1]] == matriz[card2[0]][card2[1]]) {
@@ -154,6 +193,7 @@ class _MemoramaState extends State<Memorama> {
       card1[1] = -1;
       card2[0] = -1;
       card2[1] = -1;
+      parejas++;
     }else {
       if(stop == true){
         stop = false;
@@ -170,5 +210,20 @@ class _MemoramaState extends State<Memorama> {
     }
 
     return res;
+  }
+
+  void restartAll() {
+    MatrizInit();
+
+    for (int i = 0; i < girados.length; i++) {
+      for (int j = 0; j < girados[i].length; j++) {
+        girados[i][j] = 0;
+      }
+    }
+
+    stop = false;
+    card1 = [-1, -1];
+    card2 = [-1, -1];
+    parejas = 0;
   }
 }
