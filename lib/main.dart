@@ -1,8 +1,38 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:examen1/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core_web/firebase_core_web.dart';
+import 'package:firebase_core_web/firebase_core_web_interop.dart';
 import 'package:flutter/material.dart';
 
 import 'memorama.dart';
 
-void main() {
+Future<void> main() async{
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions().currentPlatform,
+  );
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+  final CollectionReference users = db.collection('users');
+
+  final Map<String, dynamic> userFields = {
+    'name': 'alejandro2',
+    'last_name': 'ordaz',
+    'age' : '28'
+  };
+
+  DocumentReference newUser = users.doc();
+
+  print(users.id);
+
+  await newUser.set(userFields);
+
+  String newIdUser = newUser.id;
+  await users.doc(newIdUser).update({'age' : '29'});
+
+  await users.doc(newIdUser).delete();
+
   runApp(const MyApp());
 }
 
@@ -30,6 +60,8 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
+
+
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: Memorama(),

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "558846643955",
+    "project_id": "appapa-a17ac",
+    "storage_bucket": "appapa-a17ac.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:558846643955:android:bb10fe9b6d133217527186",
+        "android_client_info": {
+          "package_name": "com.alexp.examen1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjLYtac3-ZQ1EcDye67TYxqRGfj-PCZPw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
